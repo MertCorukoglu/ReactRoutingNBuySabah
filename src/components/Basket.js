@@ -1,11 +1,12 @@
 import React from 'react';
-import { Offcanvas, Button } from 'react-bootstrap';
+import { Offcanvas, Button, ListGroup, Row, Col, Badge } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { stateBasket } from '../store/action/basket.action';
 
 function Basket({ ...props }) {
 	const basketState = useSelector((store) => store.basketState.status);
+	const cartItems = useSelector((store) => store.cartState.cartItems);
 	console.log('basketState', basketState);
 
 	const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function Basket({ ...props }) {
 		<>
 			<Offcanvas show={basketState} {...props}>
 				<Offcanvas.Header>
-					<Offcanvas.Title>Offcanvas</Offcanvas.Title>
+					<Offcanvas.Title>Sepetim</Offcanvas.Title>
 					<a
 						onClick={() => {
 							handleClose();
@@ -27,8 +28,37 @@ function Basket({ ...props }) {
 					</a>
 				</Offcanvas.Header>
 				<Offcanvas.Body>
-					Some text as placeholder. In real life you can have the elements you
-					have chosen. Like, text, images, lists, etc.
+					<ListGroup as="ul">
+						{cartItems &&
+							cartItems.map((item) => {
+								return (
+									<ListGroup.Item as="li">
+										<Row>
+											<Col>
+												<div>
+													<b>{item.name}</b>
+												</div>
+												<div>{item.price}₺</div>
+											</Col>
+											<Col>
+												<a>
+													<i class="bi bi-dash-square"></i>
+												</a>{' '}
+												<Badge bg="dark" pill>
+													{item.quantity}
+												</Badge>
+												<a>
+													<i class="bi bi-plus-square"></i>
+												</a>
+												<a>
+													<i class="bi bi-x-square"></i>
+												</a>
+											</Col>
+										</Row>
+									</ListGroup.Item>
+								);
+							})}
+					</ListGroup>
 				</Offcanvas.Body>
 			</Offcanvas>
 		</>
