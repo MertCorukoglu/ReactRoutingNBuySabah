@@ -35,7 +35,12 @@ export const CartReducer = (state = CartState, action) => {
 				cartItems: cartObject2.cartItems,
 				total: cartObject2.total,
 			};
-
+		case 'ClearFromCart':
+			console.log('HEPSİNİ TEMİZLE');
+			return {
+				cartItems: [],
+				total: 0,
+			};
 		default:
 			console.log('default');
 			return state;
