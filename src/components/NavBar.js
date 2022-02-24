@@ -15,6 +15,8 @@ function NavBar() {
 
 	// bu kısımda ise store içerisinde state bağlandık. bunu yapmak için ise useSelector denilen bir hook kullandık. storedan bilgi çekmek için useSelector hook kullanıyoruz.
 	const authState = useSelector((store) => store.authState);
+	const totalPrice = useSelector((store) => store.cartState.total);
+
 	const dispatch = useDispatch();
 
 	// console.log('isAuth', isAuth);
@@ -85,6 +87,7 @@ function NavBar() {
 									onClick={() => handleShow()}
 								>
 									<i className="bi bi-cart2"></i>
+									{totalPrice.toFixed(2)}
 								</Button>
 								<Basket></Basket>
 							</>

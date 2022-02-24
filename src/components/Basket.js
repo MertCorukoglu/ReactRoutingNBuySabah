@@ -2,17 +2,26 @@ import React from 'react';
 import { Offcanvas, Button, ListGroup, Row, Col, Badge } from 'react-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { CartService } from '../services/cart.service';
 import { stateBasket } from '../store/action/basket.action';
+import { ClearFromCart, RemoveFromCart } from '../store/action/cart.action';
 
 function Basket({ ...props }) {
 	const basketState = useSelector((store) => store.basketState.status);
 	const cartItems = useSelector((store) => store.cartState.cartItems);
+	const totalPrice = useSelector((store) => store.cartState.total);
+	console.log('cartItems', cartItems);
 	console.log('basketState', basketState);
 
 	const dispatch = useDispatch();
-
+	const removeItem = (id) => {
+		dispatch(RemoveFromCart(id, cartItems));
+	};
 	const handleClose = () => {
 		dispatch(stateBasket(false));
+	};
+	const clearCart = () => {
+		dispatch(ClearFromCart());
 	};
 	return (
 		<>
@@ -50,7 +59,11 @@ function Basket({ ...props }) {
 												<a>
 													<i class="bi bi-plus-square"></i>
 												</a>
-												<a>
+												<a
+													onClick={() => {
+														removeItem(item.id);
+													}}
+												>
 													<i class="bi bi-x-square"></i>
 												</a>
 											</Col>
@@ -58,6 +71,17 @@ function Basket({ ...props }) {
 									</ListGroup.Item>
 								);
 							})}
+						<ListGroup.Item as="li">Toplam Tutar = {totalPrice}</ListGroup.Item>
+						<ListGroup.Item as="li">
+							<Button
+								onClick={() => {
+									clearCart();
+								}}
+								className="btn btn-danger"
+							>
+								Sepeti Temizle
+							</Button>
+						</ListGroup.Item>
 					</ListGroup>
 				</Offcanvas.Body>
 			</Offcanvas>
