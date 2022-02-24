@@ -3,6 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Row } from 'react-bootstrap';
 import { Outlet } from 'react-router';
+
 import Layout from './components/Layout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -24,10 +25,10 @@ function App() {
 		console.log('app.js useEffect');
 
 		// 1 saat da bir productların güncel halini çekelim
-		setInterval(() => {
-			console.log('interval');
-			dispatch(FetchProducts());
-		}, 1000 * 60 * 60);
+		// setInterval(() => {
+		// 	console.log('interval');
+		// 	dispatch(FetchProducts());
+		// }, 1000 * 60 * 60);
 	}, []);
 
 	return (

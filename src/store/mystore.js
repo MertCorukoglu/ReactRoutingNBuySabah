@@ -8,6 +8,7 @@ import { AuthReducer } from './reducer/auth.reducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ProductReducer } from './reducer/product.reducer';
 import { CartReducer } from './reducer/cart.reducer';
+import { BasketReducer } from './reducer/basket.reducer';
 // store'a reducer bağlamış olduk
 
 //combineReducers function ile sistemdeki tüm reducerları store tanıtmış oluruz.
@@ -17,6 +18,7 @@ export const myStore = createStore(
 		authState: AuthReducer, // reducer alias authState
 		productState: ProductReducer,
 		cartState: CartReducer,
+		basketState: BasketReducer,
 	}),
 	composeWithDevTools(applyMiddleware(thunk))
 );

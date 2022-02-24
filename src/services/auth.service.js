@@ -11,6 +11,7 @@ AuthService.login = async ({ username, password, rememberme }, callback) => {
 	};
 
 	console.log('rememberme', rememberme);
+	console.log('param', param);
 
 	try {
 		let response = await BaseHttpClientService.post(
