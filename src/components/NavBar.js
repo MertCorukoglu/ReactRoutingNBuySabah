@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { AuthService } from '../services/auth.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClearAuthState } from '../store/action/auth.action';
+import { stateBasket } from '../store/action/basket.action';
+import Basket from './Basket';
 
 function NavBar() {
 	// const isAuth = AuthService.isAuthenticated();
@@ -22,6 +24,11 @@ function NavBar() {
 			dispatch(ClearAuthState());
 			navigate(url);
 		});
+	};
+
+	const handleShow = () => {
+		console.log('TIKLANDI');
+		dispatch(stateBasket(true));
 	};
 
 	return (
@@ -72,6 +79,14 @@ function NavBar() {
 								<a className="nav-item nav-link" onClick={() => logout()}>
 									Oturumu Kapat
 								</a>
+
+								<Button
+									className="nav-item nav-link"
+									onClick={() => handleShow()}
+								>
+									<i className="bi bi-cart2"></i>
+								</Button>
+								<Basket></Basket>
 							</>
 						)}
 						{!authState.isAuthenticated && (
