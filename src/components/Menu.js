@@ -21,7 +21,7 @@ function Menu({selectedCat}) {
 
   useEffect(() => {
     setCategories(sds);
-  }, []);
+  }, [products]);
 
   const searchCat = (catName) => {
     selectedCat(catName);

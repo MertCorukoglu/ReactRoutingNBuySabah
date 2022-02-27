@@ -25,7 +25,7 @@ function Product() {
   useEffect(() => {
     console.log("PRODUCT USEEFFECT TETİKLENDİ")
     setProducts(allProducts)
-  }, [])
+  }, [allProducts])
   
   console.log("Products", products);
   const dispatch = useDispatch();
