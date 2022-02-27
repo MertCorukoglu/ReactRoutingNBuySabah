@@ -51,4 +51,34 @@ export const CartService = {
 			total: _total,
 		};
 	},
+	ReduceFromCart: (id, stateCartItems) => {
+		const newCartItems = stateCartItems.find((x) => x.id == id);
+
+		let _total = 0;
+		if (newCartItems.quantity == 1) {
+			const newCartItems1 = stateCartItems.filter((x) => x.id != id);
+			newCartItems1.forEach((item) => {
+				_total += Number(item.quantity) * Number(item.price);
+			});
+			return {
+				cartItems: [...newCartItems1],
+				total: _total,
+			};
+
+		}else{
+
+			stateCartItems.find((x) => x.id == id).quantity -= 1;
+			stateCartItems.forEach((item) => {
+				_total += Number(item.quantity) * Number(item.price);
+			});
+			return {
+				cartItems: [...stateCartItems],
+				total: _total,
+			};
+			
+
+
+		}
+
+	},
 };

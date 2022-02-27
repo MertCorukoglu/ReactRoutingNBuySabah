@@ -11,6 +11,12 @@ export const RemoveFromCart = (id) => {
 		payload: { id: id },
 	};
 };
+export const ReduceFromCart = (id) => {
+	return {
+		type: 'ReduceFromCart',
+		payload: { id: id },
+	};
+};
 
 export const ClearFromCart = () => {
 	return {
