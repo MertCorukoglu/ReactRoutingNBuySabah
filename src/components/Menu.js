@@ -24,11 +24,13 @@ function Menu({selectedCat}) {
   }, [products]);
 
   const searchCat = (catName) => {
+    const activeDoc = document.getElementsByClassName('active')
+    console.log("SEÇİLEN MENU",document.getElementsByClassName('active'))
     selectedCat(catName);
   }
 
     
-     
+  
      
   return (
     <div>
@@ -41,7 +43,7 @@ function Menu({selectedCat}) {
                 <ListGroup>
                   {
                       categories && categories.map((item,index)=>{
-                                return (<ListGroup.Item  onClick={()=>{searchCat(item)}}  action href={`#${index}`}>
+                                return (<ListGroup.Item id={item} onClick={()=>{searchCat(item)}}  action href={`#${index}`}>
                                 {item}
                               </ListGroup.Item>)
                               }

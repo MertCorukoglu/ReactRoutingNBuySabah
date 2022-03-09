@@ -3,16 +3,18 @@ import {
   Card,
   Col,
   Container,
-  ListGroup,
-  ListGroupItem,
+  OverlayTrigger,
   Row,
-  Tab,
   Toast,
+  Popover,
+  Button,
+  Badge
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { AddToCart, RemoveFromCart } from "../store/action/cart.action";
+import { AddToCart} from "../store/action/cart.action";
 import Menu from "../components/Menu";
-import { findLastIndex } from "lodash";
+
+
 
 
 function Product() {
@@ -20,40 +22,98 @@ function Product() {
   const [show, setShow] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [products, setProducts] = useState([])
+  const [toastTimer, setToastTimer] = useState()
+  const [itemQuantity, setitemQuantity] = useState([])
   
+  const popover = (item) => (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">Ürün Detayı</Popover.Header>
+      <Popover.Body>
+        <p><strong>Ürün İsmi:</strong>{item.Name}</p>
+        <p><strong>Ürün Açıklaması:</strong>{item.Description}</p>
+      </Popover.Body>
+    </Popover>
+  );
+
   console.log("PRODUCT AÇILDI")
-  useEffect(() => {
+  const quantity = [];
+  for (let index = 0; index < allProducts.length; index++) {
+    quantity.push(1); 
+  }
+  console.log("QUANTİTYY",quantity)
+  
+  useEffect( () => {
     console.log("PRODUCT USEEFFECT TETİKLENDİ")
     setProducts(allProducts)
+    setitemQuantity(quantity)   
   }, [allProducts])
   
+  
+  
+  
+  
+  console.log("İTEM QUANTİTY", itemQuantity)
   console.log("Products", products);
   const dispatch = useDispatch();
+  console.log("PRODUCT SAYISI",products.length)
+  
+  
 
 
-  const addToCart = (item) => {
+  const addToCart = (item,index) => {
+
+    //Daha önceden kalan bildirim varsa onu sıfırladık.
+    if (show === true) {
+      clearInterval(toastTimer)
+    }
     setShow(true);
 
     const cartItem = {
       id: item.ID,
       name: item.Name,
       price: item.Price,
-      quantity: 1,
+      quantity: itemQuantity[index],
     };
     setSelectedItem(cartItem);
-    setTimeout(function () {
+    
+    setToastTimer(setTimeout(function () {
       setShow(false);
-    }, 3000);
+    }, 3000));
 
     dispatch(AddToCart(cartItem));
-    // dispatch(RemoveFromCart(1));
   };
-  const searchProduct = (item) => {
-    
-    let newProductList = allProducts.filter(x => x.Categories[0].Name == item);
-    console.log("Seçilen category",products[1].Categories[0].Name)
+  const searchProduct = (name) => {
+    let newProductList = allProducts.filter(x=> x.Categories.some(c=> c.Name == name));
+
+    console.log("Seçilen category",newProductList)
     setProducts(newProductList)
     
+  }
+  const decreaseQuantity = (sayi) =>{
+    let newArray = [];
+    itemQuantity.map((item,index)=>{
+      if (sayi == index) {
+        newArray.push(itemQuantity[sayi]-1);
+      }else{
+        newArray.push(itemQuantity[index]);
+      }
+      
+    })
+    setitemQuantity(newArray);
+    console.log("GÜNCELLENEN",itemQuantity)
+  }
+  const increaseQuantity = (sayi) =>{
+    console.log("ARTTIRMA")
+    let newArray = [];
+    itemQuantity.map((item,index)=>{
+      if (sayi == index) {
+        newArray.push(itemQuantity[sayi]+1);
+      }else{
+        newArray.push(itemQuantity[index]);
+      }
+      
+    })
+    setitemQuantity(newArray)
   }
   const toastStyle = {
     position: "absolute",
@@ -111,12 +171,23 @@ function Product() {
                   </Card.Text>
 
                   <div>
-                    <Card.Link className="btn btn-secondary" onClick={""}>
-                      Ürün Detay
-                    </Card.Link>
+                    <div>
+                    <a onClick={() => decreaseQuantity(index)}>
+                          <i class="bi bi-dash-square"></i>
+                        </a>
+                    <Badge bg="primary">
+                          {itemQuantity[index]}
+                        </Badge>
+                        <a onClick={() => increaseQuantity(index)}>
+                          <i class="bi bi-plus-square"></i>
+                        </a>
+                    </div>
+                    <OverlayTrigger trigger="click" placement="right" overlay={()=>popover(item)}>
+                      <Button variant="success">Ürün Detay</Button>
+                    </OverlayTrigger>
                     <Card.Link
                       className="btn btn-warning"
-                      onClick={() => addToCart(item)}
+                      onClick={() => addToCart(item,index)}
                     >
                       Sepete Ekle
                     </Card.Link>
